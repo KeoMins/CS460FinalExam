@@ -10,12 +10,12 @@
 
 ---
 
-## Entry 1 – [Date]: Initial Plan
+## Entry 1 – [05/06/2026]: Initial Plan
 
 > Required. Write this before writing any code. Describe your plan: what you will
 > implement first, what parts you expect to be difficult, and how you plan to test.
 
-_Your entry here._
+_I plan to implement the explanations in README.md first, starting from part 1. After completing the part in the README.md, I will switch over to torchbearer.py and start implementing the code for that part. Then I will add entries to the DEVLOG.md. I think part 6 will be difficult because it requires us to cut deadend plans early w/o ever cutting the optimal plan, which doesn't seem very intuitive. I plan to test by using the given tests at the bottom of torchbearer.py, and also by drawing out the graphs and tracing them._
 
 ---
 
