@@ -2,8 +2,8 @@
 CS 460 – Algorithms: Final Programming Assignment
 The Torchbearer
 
-Student Name: ___________________________
-Student ID:   ___________________________
+Student Name: Keo Minato
+Student ID:   130882684
 
 INSTRUCTIONS
 ------------
@@ -34,7 +34,16 @@ def explain_problem():
 
     TODO
     """
-    return "TODO"
+    return (
+        "Why a single shortest-path run from S is not enough: \n"
+        "   - Because it only calculates the shortest path from the starting node to all other nodes. \n"
+        "   - It doesn't calculate the route from start to end that visits all required nodes using the least amount of fuel. \n"
+        "What decision remains after all inter-location costs are known: \n"
+        "   - It must decide the optimal sequence of relics to visit to minimize fuel used. \n"
+        "Why this requires a search over orders (one sentence): \n"
+        "   - Because the order of which relics are visited result in different total fuel used. \n"
+        "   - This means we have to explore each sequence of relics to see which one minimized fuel usage. \n"
+    )
 
 
 # =============================================================================
