@@ -65,7 +65,8 @@ def select_sources(spawn, relics, exit_node):
 
     TODO
     """
-    pass
+    sources = [spawn] + relics
+    return list(set(sources)) # Removes any duplicates
 
 
 def run_dijkstra(graph, source):
@@ -84,8 +85,35 @@ def run_dijkstra(graph, source):
 
     TODO
     """
-    pass
+    # Get all nodes (keys and neighbors) to ensure we initialize distances for all nodes in the graph
+    all_nodes = set(graph.keys())
+    for neighbors in graph.values():
+        for v, _ in neighbors:
+            all_nodes.add(v)
 
+    # Initialization
+    distances = {node: float('inf') for node in all_nodes}
+    distances[source] = 0
+    visited = set()
+    min_heap = [(0, source)] # Start at the source node with distance 0
+
+    while min_heap != []:
+        curr_cost, u = heapq.heappop(min_heap)
+
+        # Check if the current node has already been visited to avoid processing it multiple times
+        if u in visited:
+            continue
+        visited.add(u)
+
+        # Update distances for neighbors of u
+        for v, edge_cost in graph.get(u, []):
+            if v not in visited:
+                new_cost = curr_cost + edge_cost
+                # If a shorter path to v is found, update the distance and add it to the heap
+                if new_cost < distances[v]:
+                    distances[v] = new_cost
+                    heapq.heappush(min_heap, (new_cost, v))
+    return distances
 
 def precompute_distances(graph, spawn, relics, exit_node):
     """
@@ -104,7 +132,14 @@ def precompute_distances(graph, spawn, relics, exit_node):
 
     TODO
     """
-    pass
+    sources = select_sources(spawn, relics, exit_node)
+    dist_hashTable = {}
+
+    # Run Dijkstra's on each source
+    for source in sources:
+        dist_hashTable[source] = run_dijkstra(graph, source)
+    return dist_hashTable
+
 
 
 # =============================================================================
