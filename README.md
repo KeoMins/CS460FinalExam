@@ -4,17 +4,11 @@
 **Student ID:** 130882684
 **Course:** CS 460 – Algorithms | Spring 2026
 
-> This README is your project documentation. Write it the way a developer would document
-> their design decisions , bullet points, brief justifications, and concrete examples where
-> required. You are not writing an essay. You are explaining what you built and why you built
-> it that way. Delete all blockquotes like this one before submitting.
 
 ---
 
 ## Part 1: Problem Analysis
 
-> Document why this problem is not just a shortest-path problem. Three bullet points, one
-> per question. Each bullet should be 1-2 sentences max.
 
 - **Why a single shortest-path run from S is not enough:**
   _Because it only calculates the shortest path from the starting node to all other nodes. It doesn't calculate the route from start to end that visits all required nodes using the least amount of fuel._
@@ -31,33 +25,30 @@
 
 ### Part 2a: Source Selection
 
-> List the source node types as a bullet list. For each, one-line reason.
 
 | Source Node Type | Why it is a source |
 |---|---|
-| _node type_ | _one-line reason_ |
-| _node type_ | _one-line reason_ |
+| _Start/Spawn_ | _Because we always start at start node S_ |
+| _Relic_ | _Because we must visit all relic chambers in the set M_ |
 
 ### Part 2b: Distance Storage
 
-> Fill in the table. No prose required.
 
 | Property | Your answer |
 |---|---|
-| Data structure name | |
-| What the keys represent | |
-| What the values represent | |
-| Lookup time complexity | |
-| Why O(1) lookup is possible | |
+| Data structure name | Hash table of hash tables |
+| What the keys represent | _u_ represents the source node, _v_ represents the destination node |
+| What the values represent | The minimum fuel cost from _u_ to _v_ |
+| Lookup time complexity | O(1) |
+| Why O(1) lookup is possible | Hash tables convert a key into an array index, so lookups go directly to the storage location |
 
 ### Part 2c: Precomputation Complexity
 
-> State the total complexity and show the arithmetic. Two to three lines max.
 
-- **Number of Dijkstra runs:** _your answer_
-- **Cost per run:** _your answer_
-- **Total complexity:** _your answer_
-- **Justification (one line):** _your answer_
+- **Number of Dijkstra runs:** _k+1 (represents all source nodes), where k = # of relics, and the +1 covers the start/spawn node_
+- **Cost per run:** _O(mlogn) when using a min heap, where m = # of edges, and n = # of vertices_
+- **Total complexity:** _O((k+1)(mlogn))_
+- **Justification (one line):** _We have to do an entire Dijkstra run using a min heap (O(mlogn)) for each source node (k+1 nodes). These are independent runs, so we multiply the number of runs by the cost per run._
 
 ---
 
@@ -183,4 +174,5 @@ _Your answer here._
 
 > Bullet list. If none beyond lecture notes, write that.
 
-- _Your references here._
+- https://docs.python.org/3/library/heapq.html Used for part 2 in torchbearer.py for Dijkstra implementation. Verified by going to replit, copying my run_dijkstra() function and the graph from test 1 at the bottom of torchbearer.py, and then calling and printing the run_dijkstra() function. I then compared the function output to the output I got from hand tracing the graph. 
+- https://www.geeksforgeeks.org/python/python-ways-to-remove-duplicates-from-list/ Used for part 2 in torchbearer.py for selecting sources. Verified by putting duplicated numbers in the sources list and then using list(set(sources)) and printing the result.
