@@ -54,7 +54,7 @@
 
 ## Part 3: Algorithm Correctness
 
-### Part 3a: What the Invariant Means
+### Part 3a: Invariant Explanation
 
 - **For nodes already finalized (in S):**
   - _The distance from S to the finalizd nodes is the absolute shortest distance to get from S to each of the other nodes._
@@ -62,7 +62,7 @@
 - **For nodes not yet finalized (not in S):**
   - _The distance from S to the nodes that aren't finalized is the shortest distance so far to get from S to all other nodes._
 
-### Part 3b: Why Each Phase Holds
+### Part 3b: Invariant Maintenance
 
 - **Initialization : why the invariant holds before iteration 1:**
   - _The distance of the start/spawn node is set to 0 and all of the other nodes are set to infinity._ 
@@ -74,7 +74,7 @@
 - **Termination : what the invariant guarantees when the algorithm ends:**
   - _When the heap is empty, that means all reachable nodes have been finalized and all unreachable nodes are still set to infinity. This guarantees that the shortest path to every reachable node has been found._
 
-### Part 3c: Why This Matters for the Route Planner
+### Part 3c: Why Correctness Matters
 
 _When the planner tries to pick the order of which relics to go to, it would be relying on suboptimal distances, causing it to result in a suboptimal ordering._
 
