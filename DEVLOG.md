@@ -24,33 +24,28 @@ _In part 2b, in the run_dijkstra() function, we have to initialize unreachable n
 
 ---
 
-## Entry 4 – [Date]: [Short description]
+## Entry 4 – [05/07/2026]: [Finished parts 2, 3, 4, 5, and 6]
 
-_Your entry here._
-
----
-
-## Entry 5 – [Date]: Post-Implementation Reflection
-
-> Required. Written after your implementation is complete. Describe what you would
-> change or improve given more time.
-
-_Your entry here._
+_I fixed the initialization bug in run_dijkstra() in part 2 and I also finished all of the remaining parts. I had some trouble with figuring out a lower bound to use in the pruning step in the `_explore()` function. I thought that maybe I could just use the shortest distance to the remaining relic plus the shortest distance from that relic to the exit node, but I ended up using the shortest distance from the current node to the exit node. This prunes more branches as is still safe because all valid routes have to eventually end at the exit. Because there are no negative edge weights, detours through other relic chambers can only increase the total cost._
 
 ---
 
-## Final Entry – [Date]: Time Estimate
+## Entry 5 – [05/07/2026]: Post-Implementation Reflection
 
-> Required. Estimate minutes spent per part. Honesty is expected; accuracy is not graded.
+_After finishing my operating systems course, I think if I had more time I would try to implement the functions in part 5/6 in a low level language like C to help improve overhead. Python is very high level and has to be interpreted at runtime, but languages like C get translated into machine code before execution. Because of this, the `_explore()` recursion would run a lot faster. 
+
+---
+
+## Final Entry – [05/07/2026]: Time Estimate
 
 | Part | Estimated Hours |
 |---|---|
-| Part 1: Problem Analysis | |
-| Part 2: Precomputation Design | |
-| Part 3: Algorithm Correctness | |
-| Part 4: Search Design | |
-| Part 5: State and Search Space | |
-| Part 6: Pruning | |
-| Part 7: Implementation | |
-| README and DEVLOG writing | |
-| **Total** | |
+| Part 1: Problem Analysis | 0.5 |
+| Part 2: Precomputation Design | 0.75 |
+| Part 3: Algorithm Correctness | 1 |
+| Part 4: Search Design | 1 |
+| Part 5: State and Search Space | 0.75 |
+| Part 6: Pruning | 1.5 |
+| Part 7: Implementation | 3.5 |
+| README and DEVLOG writing | 1.5 |
+| **Total** | 10.5 |

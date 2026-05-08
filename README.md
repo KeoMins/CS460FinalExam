@@ -125,8 +125,10 @@ _When the planner tries to pick the order of which relics to go to, it would be 
 
 ### Part 5c: Worst-Case Search Space
 
-- **Worst-case number of orders considered:** _O(k!), where k = # of relic chambers._
-- **Why:** _The algorithm has to calculate every order of visiting all of the k relics._
+- **Worst-case number of orders considered:** 
+  - _O(k!), where k = # of relic chambers._
+- **Why:** 
+  - _The algorithm has to calculate every order of visiting all of the k relics._
 
 ---
 
@@ -134,31 +136,33 @@ _When the planner tries to pick the order of which relics to go to, it would be 
 
 ### Part 6a: Best-So-Far Tracking
 
-> Three bullets.
-
-- **What is tracked:** _Your answer here._
-- **When it is used:** _Your answer here._
-- **What it allows the algorithm to skip:** _Your answer here._
+- **What is tracked:** 
+  - _`best` is a variable that holds the current lowest total fuel cost and the order in which relics are visited for that cost._
+- **When it is used:** 
+  - _It is used when pruning to check if the current path's cost can beat the best solution so far._
+- **What it allows the algorithm to skip:** 
+  - _It allows the algorithm to skip the rest of the path's remaining branches if the current path can't produce a lower total cost than the best solution found so far._
 
 ### Part 6b: Lower Bound Estimation
 
-> Three bullets.
-
-- **What information is available at the current state:** _Your answer here._
-- **What the lower bound accounts for:** _Your answer here._
-- **Why it never overestimates:** _Your answer here._
+- **What information is available at the current state:** 
+  - _The current location/node you are at, the cost to get to that location, the set of unvisited relics, the precomputed shortest path distances from all nodes, and the exit node._
+- **What the lower bound accounts for:** 
+  - _The minimum fuel needed to get from the current node to the exit node (basically a direct path from the current node to the exit node)._
+- **Why it never overestimates:** 
+  - _Valid paths must collect all relics before reaching the end. Because the graph only contains nonnegative edge weights, any path from the current node will either go to the exit node, or collect the remaining relics. So any valid path will either equal the direct path or increase cost in order to collect remaining relics._
 
 ### Part 6c: Pruning Correctness
 
-> One to two bullets. Explain why pruning is safe.
-
-- _Your answer here._
+- _Pruning is safe because edge weights are nonnegative. Therefore, if we prune a path's remaining branches, we aren't getting rid of any optimal paths, we are only removing the paths that we know can't provide a lower cost than what we already have._
 
 ---
 
 ## References
 
-> Bullet list. If none beyond lecture notes, write that.
-
 - https://docs.python.org/3/library/heapq.html Used for part 2 in torchbearer.py for Dijkstra implementation. Verified by going to replit, copying my run_dijkstra() function and the graph from test 1 at the bottom of torchbearer.py, and then calling and printing the run_dijkstra() function. I then compared the function output to the output I got from hand tracing the graph. 
 - https://www.geeksforgeeks.org/python/python-ways-to-remove-duplicates-from-list/ Used for part 2 in torchbearer.py for selecting sources. Verified by putting duplicated numbers in the sources list and then using list(set(sources)) and printing the result.
+- "FA25CS460__Recursive_Algorithms1.pdf"
+- "CS460GreedyProofConstruction.pdf"
+- "460_Reader_1.pdf"
+- Lecture Notes
