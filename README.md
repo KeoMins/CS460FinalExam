@@ -11,13 +11,13 @@
 
 
 - **Why a single shortest-path run from S is not enough:**
-  _Because it only calculates the shortest path from the starting node to all other nodes. It doesn't calculate the route from start to end that visits all required nodes using the least amount of fuel._
+  - _Because it only calculates the shortest path from the starting node to all other nodes. It doesn't calculate the route from start to end that visits all required nodes using the least amount of fuel._
 
 - **What decision remains after all inter-location costs are known:**
-  _It must decide the optimal sequence of relics to visit to minimize fuel used._
+  - _It must decide the optimal sequence of relics to visit to minimize fuel used._
 
 - **Why this requires a search over orders (one sentence):**
-  _Because the order of which relics are visited result in different total fuel used. This means we have to explore each sequence of relics to see which one minimized fuel usage._
+  - _Because the order of which relics are visited result in different total fuel used. This means we have to explore each sequence of relics to see which one minimized fuel usage._
 
 ---
 
@@ -54,38 +54,29 @@
 
 ## Part 3: Algorithm Correctness
 
-> Document your understanding of why Dijkstra produces correct distances.
-> Bullet points and short sentences throughout. No paragraphs.
-
 ### Part 3a: What the Invariant Means
 
-> Two bullets: one for finalized nodes, one for non-finalized nodes.
-> Do not copy the invariant text from the spec.
-
 - **For nodes already finalized (in S):**
-  _Your answer here._
+  - _The distance from S to the finalizd nodes is the absolute shortest distance to get from S to each of the other nodes._
 
 - **For nodes not yet finalized (not in S):**
-  _Your answer here._
+  - _The distance from S to the nodes that aren't finalized is the shortest distance so far to get from S to all other nodes._
 
 ### Part 3b: Why Each Phase Holds
 
-> One to two bullets per phase. Maintenance must mention nonnegative edge weights.
-
 - **Initialization : why the invariant holds before iteration 1:**
-  _Your answer here._
+  - _The distance of the start/spawn node is set to 0 and all of the other nodes are set to infinity._ 
 
 - **Maintenance : why finalizing the min-dist node is always correct:**
-  _Your answer here._
+  - _Because taking an alternative path would require you to go through an unfinalized node, the distance to the unfinalized node is at least the same distance as the distance to the finalized min-dist node (since we always pick the min at each step)._
+  - _All edge weights are nonnegative, so taking any alternative path would either keep the distance the same or increase it._
 
 - **Termination : what the invariant guarantees when the algorithm ends:**
-  _Your answer here._
+  - _When the heap is empty, that means all reachable nodes have been finalized and all unreachable nodes are still set to infinity. This guarantees that the shortest path to every reachable node has been found._
 
 ### Part 3c: Why This Matters for the Route Planner
 
-> One sentence connecting correct distances to correct routing decisions.
-
-_Your answer here._
+_When the planner tries to pick the order of which relics to go to, it would be relying on suboptimal distances, causing it to result in a suboptimal ordering._
 
 ---
 
@@ -93,20 +84,22 @@ _Your answer here._
 
 ### Why Greedy Fails
 
-> State the failure mode. Then give a concrete counter-example using specific node names
-> or costs (you may use the illustration example from the spec). Three to five bullets.
-
-- **The failure mode:** _Your answer here._
-- **Counter-example setup:** _Your answer here._
-- **What greedy picks:** _Your answer here._
-- **What optimal picks:** _Your answer here._
-- **Why greedy loses:** _Your answer here._
+- **The failure mode:** 
+  - _Greedy always chooses to go to the relic that is closest to the current node, this locally cheap step can force greedy into paths with expensive costs, which can make the total cost suboptimal._
+- **Counter-example setup:** 
+  - _S is the start/spawn node. A and B are relics. T is the exit. S->A = 2, S->B = 5, A->B = 25, B->A = 4, A->T = 1, B->T = 13._
+- **What greedy picks:** 
+  - _Greedy first chooses S->A = 2, then A->B = 25, and finally B->T = 13. Total of 40._
+- **What optimal picks:** 
+  - _Optimal chooses S->B = 5, B->A = 4, and finally A->T = 1. Total of 10._
+- **Why greedy loses:** 
+  - _Greedy loses because it chooses the local optimal path, S->A, at step 1 and saves 2 units of fuel._
+  - _However, the decision forces greedy to take an expensive path to B before exiting._
+  - _Greedy didn't have the global context to know that taking S->B first would cost him more in the beginning, but save total fuel in the end._
 
 ### What the Algorithm Must Explore
 
-> One bullet. Must use the word "order."
-
-- _Your answer here._
+- _The algorithm has to explore all orders in which each of the relic chambers can be visited before exiting._
 
 ---
 
@@ -114,33 +107,26 @@ _Your answer here._
 
 ### Part 5a: State Representation
 
-> Document the three components of your search state as a table.
-> Variable names here must match exactly what you use in torchbearer.py.
-
 | Component | Variable name in code | Data type | Description |
 |---|---|---|---|
-| Current location | | | |
-| Relics already collected | | | |
-| Fuel cost so far | | | |
+| Current location | current_loc | node | The current node we are at in the graph |
+| Relics already collected | relics_visited_order & relics_remaining | list[node] & set[node] | `relics_visited_order` = the relics that we have visitedso far (in order of when they were visited). `relics_remaining` = the relics that still need to be visited. |
+| Fuel cost so far | cost_so_far | float | The amount of fuel that has been used to reach the current node. |
 
 ### Part 5b: Data Structure for Visited Relics
 
-> Fill in the table.
-
 | Property | Your answer |
 |---|---|
-| Data structure chosen | |
-| Operation: check if relic already collected | Time complexity: |
-| Operation: mark a relic as collected | Time complexity: |
-| Operation: unmark a relic (backtrack) | Time complexity: |
-| Why this structure fits | |
+| Data structure chosen | Hash set |
+| Operation: check if relic already collected | Time complexity: O(1) |
+| Operation: mark a relic as collected | Time complexity: O(1) |
+| Operation: unmark a relic (backtrack) | Time complexity: O(1) |
+| Why this structure fits | Every time we backtrack, we add and remove a relic. A hash set allows for constant insertions, deletions, and checks, which make backtracking efficient. |
 
 ### Part 5c: Worst-Case Search Space
 
-> Two bullets.
-
-- **Worst-case number of orders considered:** _Your answer (in terms of k)._
-- **Why:** _One-line justification._
+- **Worst-case number of orders considered:** _O(k!), where k = # of relic chambers._
+- **Why:** _The algorithm has to calculate every order of visiting all of the k relics._
 
 ---
 
