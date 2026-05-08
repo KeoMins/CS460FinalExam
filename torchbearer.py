@@ -35,14 +35,15 @@ def explain_problem():
     TODO
     """
     return (
-        "Why a single shortest-path run from S is not enough: \n"
-        "   - Because it only calculates the shortest path from the starting node to all other nodes. \n"
-        "   - It doesn't calculate the route from start to end that visits all required nodes using the least amount of fuel. \n"
-        "What decision remains after all inter-location costs are known: \n"
-        "   - It must decide the optimal sequence of relics to visit to minimize fuel used. \n"
-        "Why this requires a search over orders (one sentence): \n"
-        "   - Because the order of which relics are visited result in different total fuel used. \n"
-        "   - This means we have to explore each sequence of relics to see which one minimized fuel usage. \n"
+        "Part 1: Problem Analysis \n"
+        "   - Why a single shortest-path run from S is not enough: \n"
+        "       - Because it only calculates the shortest path from the starting node to all other nodes. \n"
+        "       - It doesn't calculate the route from start to end that visits all required nodes using the least amount of fuel. \n"
+        "   - What decision remains after all inter-location costs are known: \n"
+        "       - It must decide the optimal sequence of relics to visit to minimize fuel used. \n"
+        "   - Why this requires a search over orders (one sentence): \n"
+        "       - Because the order of which relics are visited result in different total fuel used. \n"
+        "       - This means we have to explore each sequence of relics to see which one minimized fuel usage. \n"
     )
 
 
@@ -156,8 +157,23 @@ def dijkstra_invariant_check():
 
     TODO
     """
-    return "TODO"
-
+    return (
+        "Part 3a: What the Invariant Means \n"
+        "   - For nodes already finalized (in S): \n"
+        "      - The distance from S to the finalizd nodes is the absolute shortest distance to get from S to each of the other nodes. \n"
+        "   - For nodes not yet finalized (not in S): \n"
+        "       - The distance from S to the nodes that aren't finalized is the shortest distance so far to get from S to all other nodes. \n"
+        "Part 3b: Why Each Phase Holds \n"
+        "   - Initialization : why the invariant holds before iteration 1: \n"
+        "       - The distance of the start/spawn node is set to 0 and all of the other nodes are set to infinity. \n"
+        "   - Maintenance : why finalizing the min-dist node is always correct: \n"
+        "       - Because taking an alternative path would require you to go through an unfinalized node, the distance to the unfinalized node is at least the same distance as the distance to the finalized min-dist node (since we always pick the min at each step). \n"
+        "       - All edge weights are nonnegative, so taking any alternative path would either keep the distance the same or increase it. \n"
+        "   - Termination : what the invariant guarantees when the algorithm ends: \n"
+        "       - When the heap is empty, that means all reachable nodes have been finalized and all unreachable nodes are still set to infinity. This guarantees that the shortest path to every reachable node has been found. \n"
+        "Part 3c: Why This Matters for the Route Planner \n"
+        "   - When the planner tries to pick the order of which relics to go to, it would be relying on suboptimal distances, causing it to result in a suboptimal ordering. \n"
+    )
 
 # =============================================================================
 # PART 4
@@ -173,7 +189,23 @@ def explain_search():
 
     TODO
     """
-    return "TODO"
+    return (
+        "Why Greedy Fails \n"
+        "   - The failure mode: \n"
+        "       - Greedy always chooses to go to the relic that is closest to the current node, this locally cheap step can force greedy into paths with expensive costs, which can make the total cost suboptimal. \n"
+        "   - Counter-example setup: \n"
+        "       - S is the start/spawn node. A and B are relics. T is the exit. S->A = 2, S->B = 5, A->B = 25, B->A = 4, A->T = 1, B->T = 13. \n"
+        "   - What greedy picks: \n"
+        "       - Greedy first chooses S->A = 2, then A->B = 25, and finally B->T = 13. Total of 40. \n"
+        "   - What optimal picks: \n"
+        "       - Optimal chooses S->B = 5, B->A = 4, and finally A->T = 1. Total of 10. \n"
+        "   - Why greedy loses: \n"
+        "       - Greedy loses because it chooses the local optimal path, S->A, at step 1 and saves 2 units of fuel. \n"
+        "       - However, the decision forces greedy to take an expensive path to B before exiting. \n"
+        "       - Greedy didn't have the global context to know that taking S->B first would cost him more in the beginning, but save total fuel in the end. \n"
+        "What the Algorithm Must Explore \n"
+        "   - The algorithm has to explore all orders in which each of the relic chambers can be visited before exiting. \n"
+    )
 
 
 # =============================================================================
